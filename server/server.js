@@ -1,38 +1,26 @@
-const fs = require('fs');
-const fastify = require('fastify')({ logger: true });
+const express = require('express')
+const mysql = require('mysql')
+const cors = require('cors')
 
-// fastify.register(require('fastify-cors'), {});
+const app = express()
 
-// fastify.get('/', async (request, reply) => {
-// 	fs.readFile('./users.json', 'utf8', (err, data) => {
-// 		if (err) {
-// 			console.log('File read failed:', err);
-// 			return;
-// 		}
+app.use(cors())
 
-// 		if(request.query.term)
-// 		{
-// 			const result = JSON.parse(data).filter((elem)=> elem.name.toLowerCase().search(request.query.term.toLowerCase()) !== -1);
-// 			reply.send(JSON.stringify(result));
-// 		}
-// 		else
-// 		{
-// 			reply.send(data);
-// 		}
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'KOMPUKTER\oksana',
+  password: '',
+  database: 'websoft'
+})
 
-// 	})
-// });
+app.get('/dbo.data', (req, res) => {
+  const sql = 'SELECT id FROM dbo.data'
+  db.query(sql, (err, data) => {
+    if (err) console.log(res.json(err)); 
+      console.log(res.json(data));
+  })
+})
 
-const start = async () => {
-  try {
-    await fastify.listen('localhost')
-  } catch (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
-};
-
-const mysql = require('mysql');
-const connection = mysql.createConnection
-
-start();
+app.listen(3000, () => {
+  console.log('listening');
+})
