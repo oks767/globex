@@ -8,19 +8,22 @@ app.use(cors())
 
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'KOMPUKTER\oksana',
-  password: '',
-  database: 'websoft'
+  user: 'user1',
+  password: 'user1',
+  database: 'websoft',
+  port: 80
+  
 })
+db.connect()
 
-app.get('/dbo.data', (req, res) => {
-  const sql = 'SELECT id FROM dbo.data'
-  db.query(sql, (err, data) => {
-    if (err) console.log(res.json(err)); 
-      console.log(res.json(data));
+const id = 
+
+app.get('/websoft', (req, res) => {
+  db.query('SELECT id FROM Table_1', function(error, results, fields) {
+    if (error) throw error
+    return res.json(results)
   })
 })
-
-app.listen(3000, () => {
+app.listen(80, () => {
   console.log('listening');
 })
