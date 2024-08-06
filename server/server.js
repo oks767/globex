@@ -36,21 +36,28 @@ var Connection = require('tedious').Connection;
         server: 'localhost',  //update me
         authentication: {
             type: 'default',
+            
             options: {
-                userName: '', //update me
-                password: ''  //update me
+                userName: 'root', //update me
+                password: 'root',  //update me 
             }
         },
         options: {
             // If you are on Microsoft Azure, you need encryption:
             encrypt: true,
-            database: 'websoft'  //update me
+            database: 'websoft',  //update me
+            trustServerCertificate: true,
         }
     };  
     var connection = new Connection(config);  
     connection.on('connect', function(err) {  
         // If no error, then good to proceed.
-        console.log("Connected");  
+        if (err) {
+            console.log(err);
+        } else {
+            executeStatement()
+        }
+        // console.log("Connected");  
     });
     
     connection.connect();
@@ -58,9 +65,12 @@ var Connection = require('tedious').Connection;
     var TYPES = require('tedious').TYPES;  
   
     function executeStatement() {  
-        var request = new Request("SELECT * data;", function(err) {  
+        var request = new Request("SELECT * Table_1;", function(err, result) {  
         if (err) {  
-            console.log(err);}  
+            console.log(err);} 
+            else {
+                console.log(result);
+            } 
         });  
         var result = "";  
         request.on('row', function(columns) {  
@@ -85,4 +95,4 @@ var Connection = require('tedious').Connection;
         });
         connection.execSql(request);  
     } 
-    executeStatement()
+    
