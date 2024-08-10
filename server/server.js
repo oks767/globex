@@ -1,34 +1,18 @@
-const { Pool } = require('pg');
 const express = require('express');
-
+const routes = require('./index');
 const app = express()
-const router = express.Router()
+
+app.use(express.json());
 
 
-
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'websoft',
-  password: 'root',
-  port: 5432,
+app.use('/api', routes);
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
-const query = (text, params) => pool.query(text, params);
 
-async function testConnection() {
-  try {
-    let result = await query("SELECT * FROM users");
-    console.log(result);
-    
-  } catch (err) {
-    console.error("Error connecting to the database", err);
-  } finally {
-    await pool.end();
-  }
-  
-}
-
-testConnection()
-
+app.listen(3000, () => {
+  console.log(`Server is running on http://localhost:3000`);
+});
  
