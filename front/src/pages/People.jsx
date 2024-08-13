@@ -1,7 +1,11 @@
 import React from 'react'
 import Person from '../widgets/Person'
+import { useDispatch, useSelector } from 'react-redux'
+import { add } from '../shared/store'
 
 function People() {
+  const people = useSelector(state => state.add.value)
+  const dispatch = useDispatch()
   return (
     <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
@@ -12,6 +16,8 @@ function People() {
             suspendisse.
           </p>
         </div>
+        {console.log(dispatch(add))
+        }
             <Person />
 
     </div>
